@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>landing page advertising — koin advertising</title>
+  <meta name="description" content="halaman landing sederhana untuk kampanye advertising. call to action, fitur, testimoni, dan formulir kontak." />
+  <link href="https://fonts.googleapis.com/css2?family=inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#ff0000;
+      --accent-2:#b30000;
+      --bg:#000000;
+      --card:#0d0d0d;
+      --muted:#b3b3b3;
+      --glass: rgba(255,255,255,0.05);
+      font-family: 'inter', system-ui, -apple-system, 'segoe ui', roboto, 'helvetica neue', arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:linear-gradient(180deg,#000000 0%, #1a0000 60%); color:#ffffff;}
+    .container{max-width:1100px;margin:0 auto;padding:28px}
+
+    header{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-img{width:46px;height:46px;border-radius:10px;} /* Added for actual image logo */
+    .nav{display:flex;gap:14px;align-items:center}
+    .btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600}
+
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;padding:28px 0}
+    .hero h1{font-size:36px;margin:0 0 10px;line-height:1.05}
+    .hero p{color:var(--muted);margin:0 0 18px}
+    .cta-row{display:flex;gap:12px}
+    .secondary{background:transparent;border:1px solid rgba(255,255,255,0.12);padding:10px 14px;border-radius:10px;color:var(--muted)}
+
+    .ad-card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.04); box-shadow: 0 4px 12px rgba(0,0,0,0.4);}
+    .mock{height:260px;border-radius:12px;background:linear-gradient(135deg,#330000,#1a0000);display:flex;align-items:center;justify-content:center;color:#ff9999;font-weight:700}
+
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+    .feature{background:var(--glass);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
+    .feature h4{margin:0 0 8px}
+    .metrics{display:flex;gap:16px;margin-top:16px}
+    .metric{background:rgba(255,255,255,0.04);padding:12px;border-radius:12px;flex:1;text-align:center}
+
+    .testimonials{margin:28px 0}
+    .test-list{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px}
+    .test{min-width:240px;background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.05)}
+
+    footer{border-top:1px solid rgba(255,255,255,0.05);padding:24px 0;margin-top:32px;color:var(--muted)}
+
+    /* Product Gallery Styles */
+    .product-gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        margin-top: 20px;
+    }
+    .product-item {
+        cursor: pointer;
+        background: var(--glass);
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .product-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+    .product-item img {
+        width: 100%;
+        height: 150px; /* Fixed height for thumbnails */
+        object-fit: cover; /* Ensures images cover the area without distortion */
+        display: block;
+    }
+    .product-item-info {
+        padding: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        background: rgba(255,255,255,0.03);
+    }
+
+    /* Lightbox/Modal Styles */
+    .lightbox {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1000; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        justify-content: center;
+        align-items: center;
+    }
+    .lightbox-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .lightbox-content img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+        border-radius: 12px;
+    }
+    .close-lightbox {
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        color: #fff;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    .close-lightbox:hover,
+    .close-lightbox:focus {
+        color: var(--accent);
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+
+    /* Media Queries */
+    @media(max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .features{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:640px){
+      .container{padding: 16px;} /* Adjusted padding for smaller screens */
+      .features{grid-template-columns:1fr}
+      .nav{display:none}
+      .logo-img{width:40px;height:40px} /* Adjusted logo size for smaller screens */
+      .hero h1{font-size:28px}
+      .mock{height:200px}
+    }
+
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));font-weight:600}
+    .pulse{animation:pulse 3s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+    form{display:grid;gap:10px}
+    input,textarea,button{font-family:inherit}
+    input,textarea{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:inherit}
+    input::placeholder{color:var(--muted)}
+    .row{display:flex;gap:8px}
+    .row > *{flex:1}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <img src="Koinadv.png" />
+        <div>
+          <div style="font-weight: 1000;">koin advertising</div>
+          <div style="font-size:23px;color:var(--muted)">advertising & creative</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a class="secondary" href="#features">fitur</a>
+        <a class="secondary" href="#product-gallery">produk</a>
+        <a class="secondary" href="#testimoni">testimoni</a>
+        <a class="btn" href="#kontak">kontak</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="badge">koin advertising</div>
+        <h1>mengerjakan berbagai kebutuhan<br><span style="color:var(--accent)">umum</span></h1>
+        <p>banner,cutting sticker,neon box,huruf timbul,stempel, dll.</p>
+        <div class="cta-row">
+          <a class="btn" href="#kontak">dapatkan penawaran</a>
+          <a class="secondary" href="#product-gallery">lihat hasil</a>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <div style="font-size:20px;font-weight:700">100%</div>
+            <div style="font-size:12px;color:var(--muted)">free revisi sepuasnya!!!</div>
+          </div>
+          <div class="metric">
+            <div style="font-size:20px;font-weight:700">dijamin</div>
+            <div style="font-size:12px;color:var(--muted)">harga ramah dikantong dan barang berkualitas</div>
+          </div>
+          <div class="metric">
+            <div style="font-size:20px;font-weight:700">24/7</div>
+            <div style="font-size:12px;color:var(--muted)">fast respon</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="ad-card">
+        <div class="mock" id="carousel">gambar iklan (carousel)</div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="secondary" id="prev">⟨</button>
+          <button class="secondary" id="next">⟩</button>
+        </div>
+        <div style="text-align:center;margin-top:12px;" id="indicator"></div> </aside>
+    </section>
+
+    <section id="features">
+      <h2>mengerjakan</h2>
+      <div class="features">
+        <div class="feature">
+          <h4>cetak banner</h4>
+          <p style="color:var(--muted);margin:0">cetak banner sehari jadi dengan menggunakan mesin berteknologi canggih.</p>
+        </div>
+        <div class="feature">
+          <h4>desain kreatif</h4>
+          <p style="color:var(--muted);margin:0">menerima jasa desain seperti desain banner,logo,dll.</p>
+        </div>
+        <div class="feature">
+          <h4>neon box</h4>
+          <p style="color:var(--muted);margin:0">media reklame dengan lampu didalamnya sehingga tampilan tulisan atau gambat dapat menyala terang di malam hari.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="product-gallery" style="margin-top: 32px;">
+        <h2>Produk Kami</h2>
+        <div class="product-gallery-grid">
+            <div class="product-item" data-large-img="https://via.placeholder.com/800x600/FF0000/FFFFFF?text=Banner+Produk+1">
+                <img src="koin1.jpg">
+                <div class="product-item-info">Banner</div>
+            </div>
+            <div class="product-item" data-large-img="https://via.placeholder.com/800x600/B30000/FFFFFF?text=Cutting+Sticker+2">
+                <img src="koin2.jpg">
+                <div class="product-item-info">Neon box</div>
+            </div>
+            <div class="product-item" data-large-img="https://via.placeholder.com/800x600/800000/FFFFFF?text=Neon+Box+3">
+                <img src="koin3.jpg">
+                <div class="product-item-info">Cutting sticker</div>
+            </div>
+            <div class="product-item" data-large-img="https://via.placeholder.com/800x600/660000/FFFFFF?text=Huruf+Timbul+4">
+                <img src="koin4.jpg">
+                <div class="product-item-info">Mug sablon custom</div>
+            </div>
+            <div class="product-item" data-large-img="https://via.placeholder.com/800x600/330000/FFFFFF?text=Stempel+5">
+                <img src="koin5.jpg">
+                <div class="product-item-info">Running text</div>
+            </div>
+        </div>
+    </section>
+    <section id="testimoni" class="testimonials">
+      <h2>testimoni</h2>
+      <div class="test-list">
+        <div class="test">
+          <div style="font-weight:700">rinaa</div>
+          <div style="color:var(--muted);font-size:13px;margin-top:6px">"ramah,pelayanannya bagus,kerjanya gesit"</div>
+        </div>
+        <div class="test">
+          <div style="font-weight:700">indraa</div>
+          <div style="color:var(--muted);font-size:13px;margin-top:6px">"banyak desain menarik dan sangat bagus,barangnya mantap"</div>
+        </div>
+        <div class="test">
+          <div style="font-weight:700">nouval</div>
+          <div style="color:var(--muted);font-size:13px;margin-top:6px">"fast respon,orangnya ramah dan selalu memberikan pelayanan terbaik"</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontak" style="margin-top:18px">
+      <h2>kontak / dapatkan penawaran</h2>
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:18px;align-items:start">
+        <div>
+          <p style="color:var(--muted)">isi formulir ini dan tim kami akan menghubungi anda untuk konsultasi gratis dan estimasi biaya.</p>
+
+          <form id="leadform">
+            <div class="row">
+              <input type="text" id="name" placeholder="nama lengkap" required />
+              <input type="text" id="company" placeholder="perusahaan / toko" />
+            </div>
+            <input type="email" id="email" placeholder="email" required />
+            <input type="tel" id="phone" placeholder="no. wa / telepon" />
+            <textarea id="message" rows="4" placeholder="pesan singkat atau tujuan campaign"></textarea>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn" type="submit">kirim permintaan</button>
+              <div style="color:var(--muted);font-size:13px">atau hubungi: <strong>+62 812-3507-4118</strong></div>
+            </div>
+            <div id="formresult" style="margin-top:8px;font-size:13px;color:var(--muted)"></div>
+          </form>
+        </div>
+
+        <aside class="ad-card">
+          <h4>kenapa memilih kami?</h4>
+          <ul style="color:var(--muted);padding-left:18px;margin:8px 0">
+            <li>bekerja secara profesional</li>
+            <li>desain gratis revisi sampai client puas</li>
+            <li>kepuasan client dijamin</li>
+          </ul>
+          <div style="margin-top:12px;color:var(--muted);font-size:13px">paket mulai dari <strong>rp 16.000</strong> — dapat disesuaikan sesuai kebutuhan.</div>
+        </aside>
+      </div>
+    </section>
+
+    <footer>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div>© 2025 koin advertising — semua hak cipta dilindungi.</div>
+        <div style="color:var(--muted);font-size:13px">Alamat: Ngawi,Dungus,Karangasri Rt 06 Rw 04 • Email:koin.advertising@gmail.com</div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="productLightbox" class="lightbox">
+      <span class="close-lightbox">&times;</span>
+      <div class="lightbox-content">
+          <img id="lightboxImg" src="" alt="Large Product Image">
+      </div>
+  </div>
+
+  <script>
+    const slides = [
+      {text:'produk berkualitas tinggi menggunakan bahan yang tebal dan berkualitas', bg: 'linear-gradient(135deg,#cc0000,#990000)'},
+      {text:'memberikan pelayanan sepenuh hati untuk para customer', bg: 'linear-gradient(135deg,#660000,#330000)'},
+      {text:'bergaransi jika barang rusak/cacat dalam kurun waktu 1 bulan!', bg: 'linear-gradient(135deg,#ff1a1a,#b30000)'}
+    ];
+    let idx = 0;
+    const carousel = document.getElementById('carousel');
+    const indicator = document.getElementById('indicator'); // Get indicator element
+    function render(){
+      const s = slides[idx];
+      carousel.style.background = s.bg;
+      carousel.textContent = s.text;
+
+      // Update Indicator
+      indicator.innerHTML = slides.map((_, i) =>
+        `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin:0 4px;background-color:${i === idx ? 'var(--accent)' : 'var(--muted)'};"></span>`
+      ).join('');
+    }
+    document.getElementById('next').addEventListener('click', ()=>{ idx = (idx+1)%slides.length; render(); });
+    document.getElementById('prev').addEventListener('click', ()=>{ idx = (idx-1+slides.length)%slides.length; render(); });
+    render();
+
+    document.getElementById('leadform').addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const result = document.getElementById('formresult');
+      if(!name || !email){ result.textContent = 'mohon isi nama dan email.'; return; }
+      result.style.color = 'lightgreen';
+      result.textContent = 'terima kasih — permintaan anda telah dikirim.';
+      this.reset();
+    });
+
+    // Product Gallery Lightbox Logic
+    const lightbox = document.getElementById('productLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeLightbox = document.querySelector('.close-lightbox');
+    const productItems = document.querySelectorAll('.product-item');
+
+    productItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const largeImgSrc = this.dataset.largeImg;
+            lightbox.style.display = 'flex'; // Show the lightbox
+            lightboxImg.src = largeImgSrc;
+        });
+    });
+
+    closeLightbox.addEventListener('click', () => {
+        lightbox.style.display = 'none'; // Hide the lightbox
+    });
+
+    // Close lightbox when clicking outside the image
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            lightbox.style.display = 'none';
+        }
+    });
+
+  </script>
+</body>
+</html>
